@@ -59,7 +59,7 @@ teardown() {
 # If this test fails, your script either didn't run at all, or it
 # generated some sort of error when it ran.
 @test "bin/process_client_logs.sh runs successfully" {
-  run bin/process_client_logs.sh data/discovery
+  run bin/process_client_logs.sh log_files/discovery
   assert_success
 }
 
