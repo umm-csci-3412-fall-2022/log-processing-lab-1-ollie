@@ -1,8 +1,12 @@
 #! /usr/bin/env bash
 
+SCRATCH=$(mktemp --directory) 
+home=$(pwd)
 cd "$1" || exit
-name=0;
-namecount=0;
-sort failed_login_data.txt
+cat "$home/html_components/username_dist_header.html" > username_dist.html
+for f in $(ls -d */); do
+	cat "$f/failed_login_data.txt" | awk '{ print $4 }' >> "$SCRATCH/listOfNames.txt"
+done
+sort "$SCRATCH/listOfNames.txt" | uniq -c | awk '{ print "data.addRow([\x27"$2"\x27, "$1"]);">> "username_dist.html"}' 
+cat "$home/html_components/username_dist_footer.html" >> username_dist.html
 
-| awk '{if (match($0,//,group)) {print group[1] " " group[3] " " group[4]>>"../../failed_login_data.txt";}}'
